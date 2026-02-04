@@ -76,31 +76,55 @@ object hw01 extends App:
   def testPlus2(plus: (Int, Int) => Int): Unit =
     assert(plus(1, 1) == 2)
 
-  //testPlus2(badplus)
+//  testPlus2(badplus)
 
   /* Exercises */
 
-  def abs(n: Double): Double =
-    ???
+  def abs(n: Double): Double = if n >= 0 then n else -1.0 * n
 
   def ar(p: Int): Int =
-    ???
+    if p < 0 then
+      1 + ar(-p)
+    else if p < 10 then
+      1
+    else
+      1 + ar(p / 10)
+
 
   def rep(s: String, t: String, n: Int): String =
     require (n >= 0)
-    ???
+    def loop(acc: String, i: Int): String =
+      if i == 0 then
+        acc
+      else if i == n then
+        loop(s, i - 1)
+      else
+        loop(acc + t + s, i - 1)
+    loop("", n)
 
 
   def approx(c: Double, xn: Double): Double =
-    ???
+    val numerator = (xn * xn * xn) - c
+    val denominator = 3 * xn * xn
+    xn - (numerator/denominator)
+
 
   def approxN(c: Double, xn: Double, n: Int): Double =
     require(n >= 0)
-    ???
+    if n == 0 then
+      xn
+    else
+      val step_approx = approx(c, xn)
+      approxN(c, step_approx, n - 1)
 
   def approxErr(c: Double, xn: Double, epsilon: Double): Double =
     require (epsilon > 0)
-    ???
+    if abs(xn - (c / (xn * xn))) < epsilon then
+      xn
+    else
+      val step_approx = approx(c, xn)
+      approxErr(c, step_approx, epsilon)
+
 
   def root(c: Double): Double =
     approxErr(c, 1.0, 0.0001)
